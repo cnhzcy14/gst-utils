@@ -5,8 +5,6 @@ project 				(${PROJECT_NAME})
 set(CMAKE_C_FLAGS "-O3 -std=c11 -D_GNU_SOURCE -fopenmp")
 set(CMAKE_CXX_FLAGS "-O3 -std=c++14 -fopenmp")
 
-#set(CMAKE_INSTALL_PREFIX "/opt/dahua")
-
 find_package(PkgConfig REQUIRED)
 
 pkg_check_modules(GST_VIDEO REQUIRED IMPORTED_TARGET gstreamer-video-1.0)
@@ -18,14 +16,9 @@ set(LIBS ${LIBS} PkgConfig::GST_RTSP )
 
 add_executable			( gst-rec gst-rec.cpp )
 target_link_libraries 	( gst-rec ${LIBS} )
-#install(TARGETS recorder
-#        RUNTIME DESTINATION bin)
 
 add_executable			( gst-rtsp gst-rtsp.cpp )
 target_link_libraries 	( gst-rtsp ${LIBS} )
-#install(TARGETS gst_rtsp
-#        RUNTIME DESTINATION bin)
-
 
 message(STATUS)
 message(STATUS "General configuration for ${PROJECT_NAME}")
