@@ -14,10 +14,10 @@ pkg_check_modules(GST_RTSP REQUIRED IMPORTED_TARGET gstreamer-rtsp-server-1.0)
 set(LIBS ${LIBS} PkgConfig::GST_RTSP )
 
 
-add_executable			( gst-rec gst-rec.cpp )
+add_executable			( gst-rec gst-rec.c )
 target_link_libraries 	( gst-rec ${LIBS} )
 
-add_executable			( gst-rtsp gst-rtsp.cpp )
+add_executable			( gst-rtsp gst-rtsp.c )
 target_link_libraries 	( gst-rtsp ${LIBS} )
 
 message(STATUS)

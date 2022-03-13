@@ -5,8 +5,6 @@
 #include <getopt.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <iomanip>
-#include <fstream>
 
 int main(int argc, char *argv[])
 {
@@ -16,8 +14,8 @@ int main(int argc, char *argv[])
     GstMessage *msg;
     const GstStructure *msmsg;
     GstClockTime base_time;
-    std::stringstream str_id;
-    std::fstream file;
+    // std::fstream file;
+    FILE *file;
     int opt;
     const char *csv_location;
     const char *lunch_str;
@@ -44,7 +42,13 @@ int main(int argc, char *argv[])
         }
     }
 
-    file.open(csv_location, std::ios::out | std::ios::app);
+    file = fopen(csv_location, "w");
+    if (file == NULL)
+    {
+        printf("Error! Could not open file\n");
+        exit(-1); // must include stdlib.h
+    }
+    setlinebuf(file);
 
     /* Build the pipeline */
     pipeline = gst_parse_launch(lunch_str, NULL);
@@ -59,7 +63,7 @@ int main(int argc, char *argv[])
     while (1)
     {
         msg = gst_bus_timed_pop_filtered(bus, GST_CLOCK_TIME_NONE,
-                                         static_cast<GstMessageType>(GST_MESSAGE_ERROR | GST_MESSAGE_EOS | GST_MESSAGE_ELEMENT));
+                                         (GstMessageType)(GST_MESSAGE_ERROR | GST_MESSAGE_EOS | GST_MESSAGE_ELEMENT));
         /* Parse message */
         if (msg != NULL)
         {
@@ -90,9 +94,7 @@ int main(int argc, char *argv[])
                     gst_structure_get_uint64(msmsg, "timestamp", &timestamp);
                     gst_structure_get_int(msmsg, "index", &idx);
 
-                    str_id.str("");
-                    str_id << std::setw(8) << std::setfill('0') << idx;
-                    file << std::to_string(timestamp + base_time) << "," << str_id.str() << ".png" << std::endl;
+                    fprintf(file, "%ld,%08d.png\n", timestamp + base_time, idx);
                     GST_INFO("ID: %d; Timestamp: %ld\n", idx, timestamp + base_time);
                 }
                 break;
@@ -105,10 +107,11 @@ int main(int argc, char *argv[])
         }
     }
 
-    file.close();
+    fclose(file);
     /* Free resources */
     gst_object_unref(bus);
     gst_element_set_state(pipeline, GST_STATE_NULL);
     gst_object_unref(pipeline);
+    
     return 0;
 }
