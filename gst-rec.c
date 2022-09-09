@@ -94,7 +94,7 @@ int main(int argc, char *argv[])
                     gst_structure_get_uint64(msmsg, "timestamp", &timestamp);
                     gst_structure_get_int(msmsg, "index", &idx);
 
-                    fprintf(file, "%ld,%08d.png\n", timestamp + base_time, idx);
+                    fprintf(file, "%ld,%08d\n", timestamp + base_time, idx);
                     GST_INFO("ID: %d; Timestamp: %ld\n", idx, timestamp + base_time);
                 }
                 break;

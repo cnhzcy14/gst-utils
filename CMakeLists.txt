@@ -20,6 +20,9 @@ target_link_libraries 	( gst-rec ${LIBS} )
 add_executable			( gst-rtsp gst-rtsp.c )
 target_link_libraries 	( gst-rtsp ${LIBS} )
 
+install(TARGETS gst-rec gst-rtsp
+        RUNTIME DESTINATION /usr/local/bin)
+
 message(STATUS)
 message(STATUS "General configuration for ${PROJECT_NAME}")
 message(STATUS "======================================================================")
