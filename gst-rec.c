@@ -38,6 +38,7 @@ int main(int argc, char *argv[])
             g_print("example pipelines:\n");
             g_print("'v4l2src device=/dev/video2 ! video/x-raw,width=640,height=480,framerate=30/1 ! pngenc compression-level=0 multifilesink post-messages=true location=%%08d.png\n");
             g_print("'v4l2src device=/dev/video0 ! video/x-raw,format=NV12,width=480,height=640,framerate=25/1 ! queue2 ! videoconvert ! video/x-raw,format=GRAY8,framerate=25/1 ! queue2 ! pngenc compression-level=0 ! multifilesink post-messages=true location=/userdata/test/%%08d.png sync=true'\n");
+            g_print("'v4l2src device=/dev/video0 ! video/x-raw,format=NV12,width=480,height=640,framerate=25/1 ! queue2 ! multifilesink post-messages=true location=/userdata/tmp/%%08d.yuv sync=true'\n");
             return 0;
         }
     }
